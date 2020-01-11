@@ -37,7 +37,9 @@ ACCESS_TOKEN_VK=ВАШ_ACCESS_TOKEN
 Сделать это можно [здесь](http://regvk.com/id/).
 
 Дописываем в `.env`:
+```
 GROUP_ID_VK=ВАШ_GROUP_ID
+```
 
 ## Как запустить скрипт
 
