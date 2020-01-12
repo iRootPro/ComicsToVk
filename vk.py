@@ -3,11 +3,11 @@ import requests
 import xkcd
 
 
-url_base = 'https://api.vk.com/method/'
+URL_BASE = 'https://api.vk.com/method/'
 
 
 def get_url_for_upload_comics(token, group_id):
-    url = f'{url_base}photos.getWallUploadServer'
+    url = f'{URL_BASE}photos.getWallUploadServer'
     params_url = {
         'access_token': token,
         'v': '5.103',
@@ -48,7 +48,7 @@ def upload_image_to_server_vk(upload_url, token, group_id):
 
 
 def save_image_to_wall_vk(server_vk, photo_vk, hash_vk, token, group_id):
-    url = f'{url_base}photos.saveWallPhoto'
+    url = f'{URL_BASE}photos.saveWallPhoto'
     payload = {
         'access_token': token,
         'v': '5.103',
@@ -66,7 +66,7 @@ def save_image_to_wall_vk(server_vk, photo_vk, hash_vk, token, group_id):
 
 
 def post_wall(photo_id, owner_id, message, token, group_id):
-    url = f'{url_base}wall.post'
+    url = f'{URL_BASE}wall.post'
     attachment = f'photo{owner_id}_{photo_id}'
     payload = {
         'access_token': token,
