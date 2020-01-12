@@ -16,9 +16,10 @@ def get_url_for_upload_comics(token, group_id):
 
     response = requests.get(url, params=params_url)
     response.raise_for_status()
-    upload_url = response.json()['response']['upload_url']
-    album_id = response.json()['response']['album_id']
-    user_id = response.json()['response']['user_id']
+    data_from_response = response.json()['response']
+    upload_url = data_from_response['upload_url']
+    album_id = data_from_response['album_id']
+    user_id = data_from_response['user_id']
 
     return upload_url
 
