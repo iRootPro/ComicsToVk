@@ -24,6 +24,14 @@ def get_url_for_upload_comics(token, group_id):
     return upload_url
 
 
+def check_error_upload(response_from_sever_vk):
+    try:
+        return response_from_sever_vk['photo']
+    except:
+        raise HTTPError
+
+
+
 def upload_image_to_server_vk(upload_url, token, group_id):
     payload = {
         'access_token': token,
@@ -38,14 +46,14 @@ def upload_image_to_server_vk(upload_url, token, group_id):
         response = requests.post(upload_url, files=photo, json=payload)
         response.raise_for_status()
 
-        if response.json()['photo']:
-            server_vk = response.json()['server']
-            photo_vk = response.json()['photo']
-            hash_vk = response.json()['hash']
+        response_from_sever_vk = response.json()
 
-            return server_vk, photo_vk, hash_vk, token
-        else:
-            return "Ваш комикс не был загружен."
+        check_error_upload(response_from_sever_vk)
+
+        server_vk = response_from_sever_vk['server']
+        photo_vk = response_from_sever_vk['photo']
+        hash_vk = response_from_sever_vk['hash']
+        return server_vk, photo_vk, hash_vk, token
 
 
 def save_image_to_wall_vk(server_vk, photo_vk, hash_vk, token, group_id):
