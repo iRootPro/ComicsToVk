@@ -1,7 +1,7 @@
 import requests
 
 import xkcd
-
+from files import remove_comics_file
 
 URL_BASE = 'https://api.vk.com/method/'
 
@@ -24,10 +24,11 @@ def get_url_for_upload_comics(token, group_id):
     return upload_url
 
 
-def check_error_upload(response_from_sever_vk):
+def check_error_response_from_server(response_from_sever_vk):
     try:
         return response_from_sever_vk['photo']
     except:
+        remove_comics_file()
         raise HTTPError
 
 
@@ -47,7 +48,7 @@ def upload_image_to_server_vk(upload_url, token, group_id):
 
         response_from_sever_vk = response.json()
 
-        check_error_upload(response_from_sever_vk)
+        check_error_response_from_server(response_from_sever_vk)
 
         server_vk = response_from_sever_vk['server']
         photo_vk = response_from_sever_vk['photo']
