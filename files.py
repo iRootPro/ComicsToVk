@@ -27,4 +27,3 @@ def remove_comics_file():
         except:
             print(f'Ошибка при удалении файла {file}')
 
-remove_comics_file()
