@@ -31,7 +31,6 @@ def check_error_upload(response_from_sever_vk):
         raise HTTPError
 
 
-
 def upload_image_to_server_vk(upload_url, token, group_id):
     payload = {
         'access_token': token,
@@ -69,8 +68,9 @@ def save_image_to_wall_vk(server_vk, photo_vk, hash_vk, token, group_id):
 
     response = requests.get(url, params=payload)
     response.raise_for_status()
-    photo_id = response.json()['response'][0]['id']
-    owner_id = response.json()['response'][0]['owner_id']
+    response_from_sever_vk = response.json()['response']
+    photo_id = response_from_sever_vk[0]['id']
+    owner_id = response_from_sever_vk[0]['owner_id']
     return photo_id, owner_id
 
 
