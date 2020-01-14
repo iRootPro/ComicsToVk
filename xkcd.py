@@ -2,10 +2,11 @@ import requests
 import os
 import random
 
-url = 'https://xkcd.com/info.0.json'
+URL_BASE = 'https://xkcd.com/'
 
 
 def get_last_num_comics():
+    url = f'{URL_BASE}info.0.json'
     response = requests.get(url)
     response.raise_for_status()
     num = response.json()['num']
@@ -14,7 +15,7 @@ def get_last_num_comics():
 
 def get_random_comics_url(num):
     comics_num = random.randint(1, num)
-    url = f'http://xkcd.com/{comics_num}/info.0.json'
+    url = f'{URL_BASE}{comics_num}/info.0.json'
 
     return url
 
