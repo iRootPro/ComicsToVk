@@ -16,20 +16,19 @@ def get_url_for_upload_comics(token, group_id):
 
     response = requests.get(url, params=params_url)
     response.raise_for_status()
-    data_from_response = response.json()['response']
-    upload_url = data_from_response['upload_url']
-    album_id = data_from_response['album_id']
-    user_id = data_from_response['user_id']
+    response_from_sever_vk = response.json()
+    check_error_response_from_server(response_from_sever_vk, 'response')
+    upload_url = response_from_sever_vk['response']['upload_url']
 
     return upload_url
 
 
-def check_error_response_from_server(response_from_sever_vk):
+def check_error_response_from_server(response_from_sever_vk, response):
     try:
-        return response_from_sever_vk['photo']
-    except:
-        remove_comics_file()
-        raise HTTPError
+        if response_from_sever_vk[response]:
+            return
+    except KeyError:
+        print(response_from_sever_vk['error']['error_msg'])
 
 
 def upload_image_to_server_vk(upload_url, token, group_id):
@@ -48,7 +47,7 @@ def upload_image_to_server_vk(upload_url, token, group_id):
 
         response_from_sever_vk = response.json()
 
-        check_error_response_from_server(response_from_sever_vk)
+        check_error_response_from_server(response_from_sever_vk, 'server')
 
         server_vk = response_from_sever_vk['server']
         photo_vk = response_from_sever_vk['photo']
@@ -69,9 +68,10 @@ def save_image_to_wall_vk(server_vk, photo_vk, hash_vk, token, group_id):
 
     response = requests.get(url, params=payload)
     response.raise_for_status()
-    response_from_sever_vk = response.json()['response']
-    photo_id = response_from_sever_vk[0]['id']
-    owner_id = response_from_sever_vk[0]['owner_id']
+    response_from_sever_vk = response.json()
+    check_error_response_from_server(response_from_sever_vk, 'response')
+    photo_id = response_from_sever_vk['response'][0]['id']
+    owner_id = response_from_sever_vk['response'][0]['owner_id']
     return photo_id, owner_id
 
 
@@ -89,7 +89,9 @@ def post_wall(photo_id, owner_id, message, token, group_id):
 
     response = requests.get(url, params=payload)
     response.raise_for_status()
-    return response.json()['response']
+    response_from_sever_vk = response.json()
+    check_error_response_from_server(response_from_sever_vk, 'response')
+    return response_from_sever_vk['response']
 
 
 def publish_to_public(token, group_id):
