@@ -91,7 +91,7 @@ def post_wall(photo_id, owner_id, message, token, group_id):
     return response.json()['response']
 
 
-def posting_to_public(token, group_id):
+def publish_to_public(token, group_id):
     message = xkcd.get_comics_from_xkcd()
     upload_url = get_url_for_upload_comics(token, group_id)
     server_vk, photo_vk, hash_vk, token = upload_image_to_server_vk(
