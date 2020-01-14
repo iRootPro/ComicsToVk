@@ -1,5 +1,6 @@
 import os
 import requests
+import glob
 
 
 def get_image_extension(image_url):
@@ -18,3 +19,12 @@ def download_image_from_xkcd(image_url):
         file.write(response.content)
 
 
+def remove_comics_file():
+    files = glob.glob('comics.*')
+    for file in files:
+        try:
+            os.remove(file)
+        except:
+            print(f'Ошибка при удалении файла {file}')
+
+remove_comics_file()
