@@ -40,8 +40,9 @@ def get_comics_from_xkcd():
     url = get_random_comics_url(get_last_num_comics())
     response = requests.get(url)
     response.raise_for_status()
-    image_url = response.json()['img']
-    comment_image = response.json()['alt']
+    response_from_server_xkcd = response.json()
+    image_url = response_from_server_xkcd['img']
+    comment_image = response_from_server_xkcd['alt']
     download_image_from_xkcd(image_url)
 
     return comment_image
