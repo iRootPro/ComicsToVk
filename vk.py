@@ -17,20 +17,15 @@ def get_url_for_upload_comics(token, group_id):
     response = requests.get(url, params=params_url)
     response.raise_for_status()
     response_from_sever_vk = response.json()
-    check_error_response_from_server(response_from_sever_vk, 'response')
+    check_error_response_from_server(response_from_sever_vk)
     upload_url = response_from_sever_vk['response']['upload_url']
 
     return upload_url
 
 
-def check_error_response_from_server(response_from_sever_vk, response):
-    try:
-        if response_from_sever_vk[response]:
-            return
-    except KeyError:
-        remove_comics_file()
-        print(response_from_sever_vk['error']['error_msg'])
-
+def check_error_response_from_server(response_from_sever_vk):
+    if 'error' in response_from_sever_vk:
+        raise requests.HTTPError(response_from_sever_vk['error']['error_msg'])
 
 def upload_image_to_server_vk(upload_url, token, group_id):
     payload = {
@@ -48,7 +43,7 @@ def upload_image_to_server_vk(upload_url, token, group_id):
 
         response_from_sever_vk = response.json()
 
-        check_error_response_from_server(response_from_sever_vk, 'server')
+        check_error_response_from_server(response_from_sever_vk)
 
         server_vk = response_from_sever_vk['server']
         photo_vk = response_from_sever_vk['photo']
@@ -70,7 +65,7 @@ def save_image_to_wall_vk(server_vk, photo_vk, hash_vk, token, group_id):
     response = requests.get(url, params=payload)
     response.raise_for_status()
     response_from_sever_vk = response.json()
-    check_error_response_from_server(response_from_sever_vk, 'response')
+    check_error_response_from_server(response_from_sever_vk)
     photo_id = response_from_sever_vk['response'][0]['id']
     owner_id = response_from_sever_vk['response'][0]['owner_id']
     return photo_id, owner_id
@@ -91,7 +86,7 @@ def post_wall(photo_id, owner_id, message, token, group_id):
     response = requests.get(url, params=payload)
     response.raise_for_status()
     response_from_sever_vk = response.json()
-    check_error_response_from_server(response_from_sever_vk, 'response')
+    check_error_response_from_server(response_from_sever_vk)
     return response_from_sever_vk['response']
 
 
