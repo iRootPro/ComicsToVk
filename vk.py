@@ -28,6 +28,7 @@ def check_error_response_from_server(response_from_sever_vk, response):
         if response_from_sever_vk[response]:
             return
     except KeyError:
+        remove_comics_file()
         print(response_from_sever_vk['error']['error_msg'])
 
 
