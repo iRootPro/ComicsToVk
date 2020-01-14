@@ -2,6 +2,8 @@ import requests
 import os
 import random
 
+import files
+
 URL_BASE = 'https://xkcd.com/'
 
 
@@ -20,22 +22,6 @@ def get_random_comics_url(num):
     return url
 
 
-def get_image_extension(image_url):
-    extension = os.path.splitext(image_url)[1]
-    return extension
-
-
-def download_image_from_xkcd(image_url):
-    extension_image = get_image_extension(image_url)
-    filename = f'comics{extension_image}'
-
-    response = requests.get(image_url)
-    response.raise_for_status()
-
-    with open(filename, 'wb') as file:
-        file.write(response.content)
-
-
 def get_comics_from_xkcd():
     url = get_random_comics_url(get_last_num_comics())
     response = requests.get(url)
@@ -43,6 +29,6 @@ def get_comics_from_xkcd():
     response_from_server_xkcd = response.json()
     image_url = response_from_server_xkcd['img']
     comment_image = response_from_server_xkcd['alt']
-    download_image_from_xkcd(image_url)
+    files.download_image_from_xkcd(image_url)
 
     return comment_image
